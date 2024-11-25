@@ -13,6 +13,39 @@
         "type": "uint256"
       },
       {
+        "name": "_numVillagersRaidWood",
+        "internalType": "uint16",
+        "type": "uint16"
+      },
+      {
+        "name": "_numVillagersRaidFood",
+        "internalType": "uint16",
+        "type": "uint16"
+      },
+      {
+        "name": "_seed",
+        "internalType": "uint256",
+        "type": "uint256"
+      }
+    ],
+    "name": "attackVillage",
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_attackerVillageId",
+        "internalType": "uint256",
+        "type": "uint256"
+      },
+      {
+        "name": "_defenderVillageId",
+        "internalType": "uint256",
+        "type": "uint256"
+      },
+      {
         "name": "_resourceToSteal",
         "internalType": "uint16",
         "type": "uint16"
@@ -57,6 +90,37 @@
     "anonymous": false,
     "inputs": [
       {
+        "name": "attackerVillageId",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "targetVillageId",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "numVillagersRaidWood",
+        "internalType": "uint16",
+        "type": "uint16",
+        "indexed": false
+      },
+      {
+        "name": "numVillagersRaidFood",
+        "internalType": "uint16",
+        "type": "uint16",
+        "indexed": false
+      }
+    ],
+    "name": "AttackVillageV2"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
         "name": "attackerVillageIds",
         "internalType": "uint256[]",
         "type": "uint256[]",
@@ -90,6 +154,49 @@
     "name": "RevealBattleResult"
   },
   {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "attackerVillageIds",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      },
+      {
+        "name": "defenderVillageId",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "woodWinnerVillageIds",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      },
+      {
+        "name": "foodWinnerVillageIds",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      },
+      {
+        "name": "woodExchanged",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      },
+      {
+        "name": "foodExchanged",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      }
+    ],
+    "name": "RevealBattleResultV2"
+  },
+  {
     "type": "error",
     "inputs": [],
     "name": "AttackTimeHasNotPassed"
@@ -97,7 +204,22 @@
   {
     "type": "error",
     "inputs": [],
+    "name": "CantRaidWithBothNoVillagers"
+  },
+  {
+    "type": "error",
+    "inputs": [],
+    "name": "NotEnoughVillagersSentForNoDefense"
+  },
+  {
+    "type": "error",
+    "inputs": [],
     "name": "NotForwardFireAddress"
+  },
+  {
+    "type": "error",
+    "inputs": [],
+    "name": "NotThatManyVillagersAvailable"
   },
   {
     "type": "error",
@@ -128,6 +250,16 @@
     "type": "error",
     "inputs": [],
     "name": "VillageHasAlreadyBeenAttacked"
+  },
+  {
+    "type": "error",
+    "inputs": [],
+    "name": "VillageLevelTooHighForBattle"
+  },
+  {
+    "type": "error",
+    "inputs": [],
+    "name": "VillageLevelTooLowForBattle"
   },
   {
     "type": "error",
@@ -243,6 +375,29 @@
     "type": "function",
     "inputs": [
       {
+        "name": "_tokenId",
+        "internalType": "uint256",
+        "type": "uint256"
+      },
+      {
+        "name": "_storedHash",
+        "internalType": "bytes32",
+        "type": "bytes32"
+      },
+      {
+        "name": "_numVillagersDefending",
+        "internalType": "uint16",
+        "type": "uint16"
+      }
+    ],
+    "name": "commitDefend",
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "inputs": [
+      {
         "name": "_defenderVillageId",
         "internalType": "uint256",
         "type": "uint256"
@@ -269,6 +424,16 @@
             "name": "timeAttacked",
             "internalType": "uint256",
             "type": "uint256"
+          },
+          {
+            "name": "numVillagersRaidWood",
+            "internalType": "uint256",
+            "type": "uint256"
+          },
+          {
+            "name": "numVillagersRaidFood",
+            "internalType": "uint256",
+            "type": "uint256"
           }
         ]
       }
@@ -293,6 +458,34 @@
       }
     ],
     "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_tokenId",
+        "internalType": "uint256",
+        "type": "uint256"
+      },
+      {
+        "name": "_numVillagersDefendWood",
+        "internalType": "uint16",
+        "type": "uint16"
+      },
+      {
+        "name": "_numVillagersDefendFood",
+        "internalType": "uint16",
+        "type": "uint16"
+      },
+      {
+        "name": "_secret",
+        "internalType": "bytes32",
+        "type": "bytes32"
+      }
+    ],
+    "name": "revealBattleResult",
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -348,6 +541,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "name": "tokenId",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "numVillagersDefending",
+        "internalType": "uint16",
+        "type": "uint16",
+        "indexed": false
+      }
+    ],
+    "name": "CommitDefenseV2"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
         "name": "attackerVillageIds",
         "internalType": "uint256[]",
         "type": "uint256[]",
@@ -381,6 +593,62 @@
     "name": "RevealBattleResult"
   },
   {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "attackerVillageIds",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      },
+      {
+        "name": "defenderVillageId",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "woodWinnerVillageIds",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      },
+      {
+        "name": "foodWinnerVillageIds",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      },
+      {
+        "name": "woodExchanged",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      },
+      {
+        "name": "foodExchanged",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      }
+    ],
+    "name": "RevealBattleResultV2"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "tokenId",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      }
+    ],
+    "name": "UpgradeLevel"
+  },
+  {
     "type": "error",
     "inputs": [],
     "name": "AlreadyCommittedDefense"
@@ -394,6 +662,11 @@
     "type": "error",
     "inputs": [],
     "name": "NotForwardFireAddress"
+  },
+  {
+    "type": "error",
+    "inputs": [],
+    "name": "NotThatManyVillagersAvailable"
   },
   {
     "type": "error",
@@ -424,6 +697,16 @@
     "type": "error",
     "inputs": [],
     "name": "VillageHasNotBeenAttacked"
+  },
+  {
+    "type": "error",
+    "inputs": [],
+    "name": "VillageLevelTooHighForBattle"
+  },
+  {
+    "type": "error",
+    "inputs": [],
+    "name": "VillageLevelTooLowForBattle"
   },
   {
     "type": "constructor",
@@ -1429,6 +1712,16 @@
           },
           {
             "name": "timeLastSpeedUpGather",
+            "internalType": "uint256",
+            "type": "uint256"
+          },
+          {
+            "name": "villagersRaiding",
+            "internalType": "uint256",
+            "type": "uint256"
+          },
+          {
+            "name": "villagersDefending",
             "internalType": "uint256",
             "type": "uint256"
           }
